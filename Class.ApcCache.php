@@ -7,17 +7,14 @@
  * @license     GNU LESSER GENERAL Public LICENSE
  */
 
-class static ApcCache {
-	
-	public function __construct() {}
-	public function __destruct() {}
+class ApcCache {
 
 	/**
    * @uses		Retrieves cached information from APC's data store.
    * @param	  None.
    * @return  Array.
    */
-	public function cacheInfo() {
+	static function cacheInfo() {
 		return apc_cache_info();
 	}
 
@@ -26,7 +23,7 @@ class static ApcCache {
    * @param	  String $key - A string, or an array of strings, that contain keys.
    * @return  Variant - Returns TRUE if the key exists, otherwise FALSE Or if an array was passed to keys, then an array is returned that contains all existing keys, or an empty array if none exist.
    */
-	public function cacheExists($key) {
+	static function cacheExists($key) {
 		return apc_exists($key);
 	}
 
@@ -38,7 +35,7 @@ class static ApcCache {
    *												from the cache (on the next request). If no ttl is supplied (or if the ttl is 0), the value will persist until it is removed from the cache manually, or otherwise fails to exist in the cache (clear, restart, etc.). 
    * @return  Boolean - Returns TRUE on success or FALSE on failure.
    */
-	public function cacheStore($key, $data, $ttl = 0) {
+	static function cacheStore($key, $data, $ttl = 0) {
 		return apc_store($key, $data, $ttl);
 	}
 
@@ -47,7 +44,7 @@ class static ApcCache {
    * @param	  String $key - The key used to store the value (with apc_store()). If an array is passed then each element is fetched and returned.
    * @return  Boolean - The stored variable or array of variables on success; FALSE on failure.
    */
-	public function cacheFetch($key) {
+	static function cacheFetch($key) {
 		return apc_fetch($key);
 	}
 
@@ -56,7 +53,7 @@ class static ApcCache {
    * @param	  String $key - The key used to store the value (with apc_store()).
    * @return  Boolean - Returns TRUE on success or FALSE on failure.
    */
-	public function cacheDelete($key) {
+	static function cacheDelete($key) {
 		return apc_delete($key);
 	}
 
@@ -65,7 +62,7 @@ class static ApcCache {
    * @param	  None.
    * @return  Boolean - Returns TRUE on success or FALSE on failure.
    */
-	public function cacheClear() {
+	static function cacheClear() {
 		return apc_clear_cache();
 	}
 
