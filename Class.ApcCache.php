@@ -2,7 +2,7 @@
 /**
  * @uses        Wrapper class to APC
  * @author      Richard Castera
- * @link        http://www.richardcastera.com/projects/code/php5-session-class
+ * @link        http://www.richardcastera.com/projects/code/apc-cache-class
  * @see         http://www.php.net/manual/en/book.apc.php
  * @license     GNU LESSER GENERAL Public LICENSE
  */
