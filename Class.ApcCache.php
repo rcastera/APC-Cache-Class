@@ -1,69 +1,102 @@
 <?php
 /**
- * @uses        Wrapper class to APC
- * @author      Richard Castera
- * @link        http://www.richardcastera.com/projects/code/apc-cache-class
- * @see         http://www.php.net/manual/en/book.apc.php
- * @license     GNU LESSER GENERAL Public LICENSE
+ * Simple Abstraction Class to APC
+ * @author Richard Castera
+ * @link http://www.richardcastera.com/projects/code/apc-cache-class
+ * @see http://www.php.net/manual/en/book.apc.php
+ * @license GNU LESSER GENERAL Public LICENSE
  */
 
 class ApcCache {
-
-	/**
-   * @uses		Retrieves cached information from APC's data store.
-   * @param	  None.
-   * @return  Array.
+  /**
+   * Retrieves cached information from APC's data store.
+   * @param String $type - If $type is "user", information about the user cache will be returned. 
+   * @param Boolean $limited - If $limited is TRUE, the return value will exclude the individual list of cache entries. This is useful when trying to optimize calls for statistics gathering.
+   * @return Array of cached data (and meta-data) or FALSE on failure.
    */
-	static function cacheInfo() {
-		return apc_cache_info();
-	}
+  public static function cacheInfo($type = '', $limited = FALSE) {
+    try {
+      return apc_cache_info($type, $limited);
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage(), $e->getCode());
+    }
+  }
 
-	/**
-   * @uses		Checks if APC key exists.
-   * @param	  String $key - A string, or an array of strings, that contain keys.
-   * @return  Variant - Returns TRUE if the key exists, otherwise FALSE Or if an array was passed to keys, then an array is returned that contains all existing keys, or an empty array if none exist.
+  /**
+   * Checks if APC key exists.
+   * @param Mixed $key - A string, or an array of strings, that contain keys.
+   * @return Mixed - Returns TRUE if the key exists, otherwise FALSE Or if an array was passed to keys, then an array is returned that contains all existing keys, or an empty array if none exist.
    */
-	static function cacheExists($key) {
-		return apc_exists($key);
-	}
+  public static function cacheExists($key = '') {
+    try {
+      return apc_exists($key);
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage(), $e->getCode());
+    }
+  }
 
-	/**
-   * @uses		Cache a variable in the data store.
-   * @param	  String $key - Store the variable using this name. keys are cache-unique, so storing a second value with the same key will overwrite the original value.
-   * @param	  String $data - The variable to store.
-   * @param	  String $ttl - Time To Live; store var in the cache for ttl seconds. After the ttl has passed, the stored variable will be expunged 
-   *												from the cache (on the next request). If no ttl is supplied (or if the ttl is 0), the value will persist until it is removed from the cache manually, or otherwise fails to exist in the cache (clear, restart, etc.). 
-   * @return  Boolean - Returns TRUE on success or FALSE on failure.
+  /**
+   * Cache a variable in the data store.
+   * @param String $key - Store the variable using this name.
+   * @param String $data - The variable to store.
+   * @param String $ttl - Time To Live; store var in the cache for ttl seconds.
+   * @return Boolean - Returns TRUE on success or FALSE on failure.
    */
-	static function cacheStore($key, $data, $ttl = 0) {
-		return apc_store($key, $data, $ttl);
-	}
+  public static function cacheStore($key, $data, $ttl = 0, $overwrite = FALSE) {
+    try {
+      ($overwrite) ? return apc_store($key, $data, $ttl) : return apc_add($key, $data, $ttl);
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage(), $e->getCode());
+    }
+  }
 
-	/**
-   * @uses		Checks if APC key exists.
-   * @param	  String $key - The key used to store the value (with apc_store()). If an array is passed then each element is fetched and returned.
-   * @return  Boolean - The stored variable or array of variables on success; FALSE on failure.
+  /**
+   * Fetch stored value in APC from key.
+   * @param String $key - The key used to store the value.
+   * @return Boolean - The stored variable or array of variables on success; FALSE on failure.
    */
-	static function cacheFetch($key) {
-		return apc_fetch($key);
-	}
+  public static function cacheFetch($key = '') {
+    try {
+      if (self::cacheExists($key)) {
+        return apc_fetch($key);  
+      }
+      else {
+        return FALSE;
+      }
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage(), $e->getCode());
+    }
+  }
 
-	/**
-   * @uses		Removes a stored variable from the cache.
-   * @param	  String $key - The key used to store the value (with apc_store()).
-   * @return  Boolean - Returns TRUE on success or FALSE on failure.
+  /**
+   * Removes a stored variable from the cache.
+   * @param String $key - The key used to store the value (with apc_store()).
+   * @return Boolean - Returns TRUE on success or FALSE on failure.
    */
-	static function cacheDelete($key) {
-		return apc_delete($key);
-	}
+  public static function cacheDelete($key = '') {
+    try {
+      return apc_delete($key);
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage(), $e->getCode());
+    }
+  }
 
-	/**
-   * @uses		Clears the APC cache.
-   * @param	  None.
-   * @return  Boolean - Returns TRUE on success or FALSE on failure.
+  /**
+   * Clears the APC cache.
+   * @param String $type - If $type is "user", the user cache will be cleared; otherwise, the system cache (cached files) will be cleared.
+   * @return Boolean - Returns TRUE on success or FALSE on failure.
    */
-	static function cacheClear() {
-		return apc_clear_cache();
-	}
-
+  public static function cacheClear($type = '') {
+    try {
+      return apc_clear_cache($type);
+    }
+    catch (Exception $e) {
+      throw new Exception($e->getMessage(), $e->getCode());
+    }
+  }
 }

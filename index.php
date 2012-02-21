@@ -1,20 +1,28 @@
 <?php
-	error_reporting(E_ALL ^ E_STRICT);
-	ini_set('display_errors', 'On');
-
+	// Include the class.
 	require('Class.ApcCache.php');
 
+	// Create a new object with properties.
 	$object = new stdClass;
-
 	$object->name = 'Richard';
-	$object->age = 34;
+	$object->age = 30;
 
-	//ApcCache::cacheStore('rich', 'is the man', 3600);
+	// Store the object in cache.
 	ApcCache::cacheStore('rich', $object, 3600);
 
+	// Now check if it exists and fetch it.
+	if (Apc::cacheExists('rich')) {
+		$person = ApcCache::cacheFetch('rich');	
+	}
+	
+	// Output the properties value.
+	echo $person->name;
 
-	$richard = ApcCache::cacheFetch('rich');
+	// Output information currently in cache.
+	print_r(Apc::cacheInfo());
 
-	echo $richard->name;
+	// Delete this specific key in cache.
+	ApcCache::cacheDelete('rich');
 
-?>
+	// Delete all cache.
+	Apc::cacheClear();
