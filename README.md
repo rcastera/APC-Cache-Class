@@ -2,8 +2,8 @@ ApcCache
 =============
 
 The Alternative PHP Cache (APC) is a free and open opcode cache for PHP. Its goal is to provide a 
-free, open, and robust framework for caching and optimizing PHP intermediate code. This class is an
-Abstraction to the APC Library.
+free, open, and robust framework for caching and optimizing PHP intermediate code. This class is in
+simple form, an Abstraction to the APC Library.
 
 
 Examples
@@ -19,10 +19,8 @@ Examples
     // Store the object in cache.
     ApcCache::cacheStore('rich', $object, 3600);
 
-    // Now check if it exists and fetch it.
-    if (Apc::cacheExists('rich')) {
-      $person = ApcCache::cacheFetch('rich'); 
-    }
+    // Now fetch it.
+    $person = ApcCache::cacheFetch('rich'); 
 
     // Output the properties value.
     echo $person->name;
