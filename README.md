@@ -8,14 +8,13 @@ Abstraction to the APC Library.
 
 Examples
 -----------
-`
-// Include the class.
-require('Class.ApcCache.php');
+`// Include the class.
+require('Class.ApcCache.php');`
 
-// Create a new object with properties.
+`// Create a new object with properties.
 $object = new stdClass;
 $object->name = 'Richard';
-$object->age = 30;
+$object->age = 30;`
 
 // Store the object in cache.
 ApcCache::cacheStore('rich', $object, 3600);
