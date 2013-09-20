@@ -1,20 +1,27 @@
 <?php
 /**
- * Simple Abstraction Class to APC
+ * Simple Abstraction Class to APC.
+ *
+ * The Alternative PHP Cache (APC) is a free and open opcode cache for PHP.
+ * Its goal is to provide a free, open, and robust framework for caching and
+ * optimizing PHP intermediate code.
+ *
  * @see http://www.php.net/manual/en/book.apc.php
  */
+namespace rcastera\Apc;
+
 class ApcCache {
     /**
      * Retrieves cached information from APC's data store.
      *
      * @param string $type - If $type is "user", information about the user cache will be returned.
-     * @param boolean $limited - If $limited is TRUE, the return value will exclude the individual
+     * @param boolean $limited - If $limited is true, the return value will exclude the individual
      *                           list of cache entries. This is useful when trying to optimize calls
      *                           for statistics gathering.
      *
      * @return array of cached data (and meta-data) or false on failure.
      */
-    public static function cacheInfo($type = '', $limited = false)
+    public static function info($type = '', $limited = false)
     {
         try {
             return apc_cache_info($type, $limited);
@@ -28,11 +35,11 @@ class ApcCache {
      *
      * @param mixed $key - A string, or an array of strings, that contain keys.
      *
-     * @return mixed - Returns TRUE if the key exists, otherwise false Or if an
+     * @return mixed - Returns true if the key exists, otherwise false or if an
      *                 array was passed to keys, then an array is returned that
      *                 contains all existing keys, or an empty array if none exist.
      */
-    public static function cacheExists($key = '')
+    public static function exists($key = '')
     {
         try {
             return apc_exists($key);
@@ -48,12 +55,16 @@ class ApcCache {
      * @param string $data - The variable to store.
      * @param string $ttl - Time To Live; store var in the cache for ttl seconds.
      *
-     * @return boolean - Returns TRUE on success or false on failure.
+     * @return boolean - Returns true on success or false on failure.
     */
-    public static function cacheStore($key, $data, $ttl = 0, $overwrite = false)
+    public static function store($key, $data, $ttl = 0, $overwrite = false)
     {
         try {
-            ($overwrite) ? return apc_store($key, $data, $ttl) : return apc_add($key, $data, $ttl);
+            if ($overwrite) {
+                return apc_store($key, $data, $ttl);
+            } else {
+                return apc_add($key, $data, $ttl);
+            }
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
@@ -66,10 +77,10 @@ class ApcCache {
      *
      * @return boolean - The stored variable or array of variables on success; false on failure.
      */
-    public static function cacheFetch($key = '')
+    public static function fetch($key = '')
     {
         try {
-            if (self::cacheExists($key)) {
+            if (self::exists($key)) {
                 return apc_fetch($key);
             } else {
                 return false;
@@ -84,9 +95,9 @@ class ApcCache {
      *
      * @param string $key - The key used to store the value (with apc_store()).
      *
-     * @return boolean - Returns TRUE on success or false on failure.
+     * @return boolean - Returns true on success or false on failure.
      */
-    public static function cacheDelete($key = '')
+    public static function delete($key = '')
     {
         try {
             return apc_delete($key);
@@ -101,9 +112,9 @@ class ApcCache {
      * @param string $type - If $type is "user", the user cache will be cleared; otherwise,
      *                       the system cache (cached files) will be cleared.
      *
-     * @return boolean - Returns TRUE on success or false on failure.
+     * @return boolean - Returns true on success or false on failure.
      */
-    public static function cacheClear($type = '') {
+    public static function clear($type = '') {
         try {
             return apc_clear_cache($type);
         } catch (Exception $e) {
@@ -111,4 +122,3 @@ class ApcCache {
         }
     }
 }
-

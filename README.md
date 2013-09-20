@@ -6,33 +6,35 @@ free, open, and robust framework for caching and optimizing PHP intermediate cod
 simple form, an Abstraction to the APC Library.
 
 
-Examples
+Example
 -----------
-    //Include the class.
-    require('Class.ApcCache.php');
+    <?php
+    require 'vendor/autoload.php';
 
-    // Create a new object with properties.
+    use rcastera\Apc\ApcCache;
+
+    // Create a new object with properties to store in cache.
     $object = new stdClass;
     $object->name = 'Richard';
     $object->age = 30;
 
     // Store the object in cache.
-    ApcCache::cacheStore('rich', $object, 3600);
+    ApcCache::store('rich', $object, 3600);
 
-    // Now fetch it.
-    $person = ApcCache::cacheFetch('rich');
+    // Now check if it exists and fetch it.
+    if (ApcCache::exists('rich')) {
+        $person = ApcCache::fetch('rich');
+    }
 
-    // Output the properties value.
+    // Output the name property value.
     echo $person->name;
 
-    // Output information currently in cache.
-    print_r(Apc::cacheInfo());
-
     // Delete this specific key in cache.
-    ApcCache::cacheDelete('rich');
+    ApcCache::delete('rich');
 
     // Delete all cache.
-    Apc::cacheClear();
+    ApcCache::clear();
+
 
 
 Contributing
