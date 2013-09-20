@@ -12,9 +12,9 @@
 
 	// Now check if it exists and fetch it.
 	if (Apc::cacheExists('rich')) {
-		$person = ApcCache::cacheFetch('rich');	
+		$person = ApcCache::cacheFetch('rich');
 	}
-	
+
 	// Output the properties value.
 	echo $person->name;
 
