@@ -1,5 +1,5 @@
 {
-  "name": "rcastera/Apc",
+  "name": "rcastera/apc",
   "description": "APC Cache",
   "keywords": ["apc", "cache"],
   "homepage": "http://www.richardcastera.com",
@@ -8,7 +8,8 @@
       { "name": "Richard Castera", "email": "richard.castera@gmail.com" }
   ],
   "require": {
-      "php": ">=5.3.0"
+      "php": ">=5.3.0",
+      "ext-apc": "*"
   },
   "autoload": {
       "psr-0": { "rcastera\\Apc": "" }
